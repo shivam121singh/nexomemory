@@ -41,7 +41,7 @@
         ::-webkit-scrollbar-thumb { background: #1f2d5a; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--cyan-glow); }
 
-        /* Realtime Announcement Banner */
+        /* Announcement Banner */
         .notice-board {
             background: linear-gradient(90deg, #0d1121, #1a2342, #0d1121);
             border-bottom: 1px solid var(--glass-border);
@@ -190,6 +190,7 @@
             text-align: center;
             padding-bottom: 20px;
             transition: var(--transition-fluid);
+            position: relative;
             cursor: pointer;
         }
         .profile-card:hover {
@@ -206,6 +207,11 @@
             justify-content: center;
             font-size: 4rem;
             transition: var(--transition-fluid);
+        }
+        .avatar-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         .profile-card:hover .avatar-box { font-size: 4.5rem; background: rgba(6, 8, 20, 0.2); }
         .profile-name { font-size: 1.25rem; margin: 15px 0 4px; color: #ffffff; font-weight: 700; }
@@ -346,7 +352,21 @@
         .item-desc { color: #d1dce8; font-size: 0.88rem; line-height: 1.5; margin-bottom: 15px; flex-grow: 1; }
         .item-actions { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px; }
         .btn-download { color: var(--cyan-glow); text-decoration: none; font-size: 0.8rem; font-weight: 700; }
-        .btn-delete { background: var(--pink-accent); color: white; border: none; padding: 4px 10px; font-size: 0.75rem; border-radius: 4px; cursor: pointer; display: none; }
+        
+        /* Delete Button Formatting */
+        .btn-delete { 
+            background: var(--pink-accent); 
+            color: white; 
+            border: none; 
+            padding: 6px 12px; 
+            font-size: 0.75rem; 
+            font-weight: bold;
+            border-radius: 6px; 
+            cursor: pointer; 
+            display: block; 
+            transition: var(--transition-fluid);
+        }
+        .btn-delete:hover { box-shadow: 0 0 10px var(--pink-accent); transform: scale(1.02); }
 
         /* Shared Room Ledger (KhataBook Style) */
         .ledger-section {
@@ -387,9 +407,26 @@
         .modal.active .modal-content { transform: scale(1); }
         .close-modal { position: absolute; top: 12px; right: 18px; font-size: 1.6rem; cursor: pointer; color: var(--text-muted); }
 
-        /* ========================================================
-           📱 RESPONSIVE BREAKPOINTS (MEDIA QUERIES FOR MOBILE PHONES)
-           ======================================================== */
+        /* Anchor Styling inside Bio popups */
+        .modal-btn-link {
+            background: transparent;
+            border: 1px solid var(--cyan-glow);
+            color: var(--cyan-glow);
+            padding: 8px 16px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: var(--transition-fluid);
+        }
+        .modal-btn-link:hover {
+            background: rgba(0, 242, 254, 0.15);
+            box-shadow: 0 0 10px var(--cyan-glow);
+        }
+
+        /* Responsive Media Queries */
         @media (min-width: 768px) {
             .utility-bar { flex-direction: row; }
             .search-box { flex: 1; }
@@ -432,26 +469,33 @@
         <div id="about">
             <h2 class="section-title">The Collective</h2>
             <div class="about-grid">
-                <div class="profile-card" onclick="openBioModal('Shivam', '🎨 MERN Stack Core Architect & UX Designer\n⚡ Digital Electronics Dev Enthusiast', '👦')">
-                    <div class="avatar-box"><span>👦</span></div>
+                
+                <div class="profile-card" onclick="openBioModal('Shivam', '🎨 MERN Stack Core Architect & UX Designer\n⚡ Digital Electronics Dev Enthusiast', '👦', 'https://github.com/Shivam-Singh-Code')">
+                    <div class="avatar-box">
+                        <span>👦</span>
+                    </div>
                     <h3 class="profile-name">Shivam</h3>
                     <p class="profile-role">CSE HINDI • 3RD YEAR</p>
                 </div>
-                <div class="profile-card" onclick="openBioModal('Satyam', '🚀 Cloud Native Infrastructure Lead\n📦 Cloud DB Management Systems Specialist', '👨‍💻')">
+
+                <div class="profile-card" onclick="openBioModal('Satyam', '🚀 Cloud Native Infrastructure Lead\n📦 Cloud DB Management Systems Specialist', '👨‍💻', 'https://github.com/satyam-username')">
                     <div class="avatar-box"><span>👨‍💻</span></div>
                     <h3 class="profile-name">Satyam</h3>
                     <p class="profile-role">CSE HINDI • 3RD YEAR</p>
                 </div>
-                <div class="profile-card" onclick="openBioModal('Krish', '🛠️ Back-End Pipeline Engineer\n🔐 Security Logic & Access Control Systems Handler', '🦁')">
+
+                <div class="profile-card" onclick="openBioModal('Krish', '🛠️ Back-End Pipeline Engineer\n🔐 Security Logic & Access Control Systems Handler', '🦁', 'https://github.com/krish-username')">
                     <div class="avatar-box"><span>🦁</span></div>
                     <h3 class="profile-name">Krish</h3>
                     <p class="profile-role">CSE HINDI • 3RD YEAR</p>
                 </div>
-                <div class="profile-card" onclick="openBioModal('Aryan', '📱 Responsive Layout Specialist\n🎨 UI Polish & Animation Engine Tweaker', '⚡')">
+
+                <div class="profile-card" onclick="openBioModal('Aryan', '📱 Responsive Layout Specialist\n🎨 UI Polish & Animation Engine Tweaker', '⚡', 'https://github.com/aryan-username')">
                     <div class="avatar-box"><span>⚡</span></div>
                     <h3 class="profile-name">Aryan</h3>
                     <p class="profile-role">CSE HINDI • 3RD YEAR</p>
                 </div>
+
             </div>
         </div>
 
@@ -550,8 +594,8 @@
             <h3 id="bioName" style="color: var(--cyan-glow); font-size: 1.5rem; margin-bottom: 8px;">Name</h3>
             <p id="bioDescription" style="color: var(--text-muted); line-height: 1.5; white-space: pre-line; font-size: 0.9rem; margin-bottom: 20px;">Bio info</p>
             <div style="display:flex; justify-content:center; gap:12px;">
-                <button class="filter-btn" style="border-color:var(--cyan-glow); color:var(--cyan-glow);" onclick="alert('Routing to internal profile portfolio data systems...')">GitHub</button>
-                <button class="filter-btn" onclick="closeBioModal()">Dismiss</button>
+                <a id="bioLink" href="#" target="_blank" class="modal-btn-link">View Portfolio</a>
+                <button class="filter-btn" style="background:rgba(255,255,255,0.05);" onclick="closeBioModal()">Dismiss</button>
             </div>
         </div>
     </div>
@@ -576,6 +620,11 @@
         const VAULT_KEY = "NexoHostel3rdYear";
         const ALLOWED_USERS = ["shivam", "satyam", "krish", "aryan"];
         
+        // ==========================================
+        // 🔒 YOUR OWN PRIVATE DELETE PASSWORD:
+        // ==========================================
+        window.SHIVAM_DELETE_KEY = "ShivamSecret2026"; 
+
         let activeSessionUser = null;
         let cachedMemoriesList = [];
         let activeFilterCategory = "all";
@@ -628,10 +677,11 @@
             triggerLocalUIUpdate();
         }
 
-        window.openBioModal = function(name, summary, icon) {
+        window.openBioModal = function(name, summary, icon, portfolioUrl) {
             document.getElementById('bioName').innerText = name;
             document.getElementById('bioDescription').innerText = summary;
             document.getElementById('bioAvatar').innerText = icon;
+            document.getElementById('bioLink').href = portfolioUrl; 
             document.getElementById('bioModal').classList.add('active');
         };
         window.closeBioModal = function() { document.getElementById('bioModal').classList.remove('active'); };
@@ -664,7 +714,7 @@
                     const formattedTimestamp = `${rightNow.toLocaleDateString([], {day:'2-digit', month:'short', year:'numeric'})} @ ${rightNow.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}`;
 
                     const memoryPayload = {
-                        author: activeSessionUser.toUpperCase(),
+                        author: activeSessionUser ? activeSessionUser.toUpperCase() : "GUEST",
                         timestamp: formattedTimestamp,
                         description: descInput.value.trim() || "No contextual description logs provided.",
                         mediaType: activeFile.type.startsWith('video') ? 'video' : 'image',
@@ -737,7 +787,6 @@
             filteredItems.forEach(item => {
                 let mediaElement = item.mediaType === 'video' 
                     ? `<video src="${item.mediaSrc}" controls></video>` : `<img src="${item.mediaSrc}" alt="Vault asset">`;
-                let deleteVisibility = activeSessionUser ? 'block' : 'none';
 
                 let cardHtml = `
                     <div class="gallery-item">
@@ -756,7 +805,7 @@
                             <p class="item-desc">${item.description}</p>
                             <div class="item-actions">
                                 <a href="${item.mediaSrc}" download="nexo-memory-file" class="btn-download">⬇️ Download</a>
-                                <button class="btn-delete" style="display: ${deleteVisibility}" onclick="deleteMemoryEntry('${item.id}')">Delete</button>
+                                <button class="btn-delete" onclick="deleteMemoryEntry('${item.id}')">Delete</button>
                             </div>
                         </div>
                     </div>
@@ -765,10 +814,20 @@
             });
         }
 
+        // ========================================================
+        // 🔐 PRIVATIZED PASSWORD PROTECTED DELETE ENGINE EXECUTION
+        // ========================================================
         window.deleteMemoryEntry = function(recordId) {
-            if(!activeSessionUser) return;
-            if(confirm("Permanently erase this timeline log from the cloud network?")) {
-                remove(ref(database, `vault_memories/${recordId}`));
+            const privateInput = prompt("🔒 Shivam's Administrative Action Required:\nEnter the private owner password to delete this item:");
+            
+            if (privateInput === null) return; 
+            
+            if (privateInput === window.SHIVAM_DELETE_KEY) {
+                remove(ref(database, `vault_memories/${recordId}`))
+                    .then(() => alert("Entry permanently cleared from cloud database!"))
+                    .catch(err => alert("Error erasing: " + err.message));
+            } else {
+                alert("❌ Access Denied! Wrong owner password. Only Shivam can delete items.");
             }
         };
 
@@ -790,12 +849,15 @@
             const expenseObject = {
                 title: name,
                 amount: cost,
-                loggedBy: activeSessionUser.toUpperCase(),
+                loggedBy: activeSessionUser ? activeSessionUser.toUpperCase() : "ADMIN",
                 date: new Date().toLocaleDateString([], {day:'2-digit', month:'short'})
             };
 
             await push(ref(database, 'room_expenses_ledger'), expenseObject);
-            titleInput.value = ""; amountInput.value = "";
+            
+            // Clean up inputs on success
+            titleInput.value = ""; 
+            amountInput.value = "";
         };
 
         onValue(ref(database, 'room_expenses_ledger'), (snapshot) => {
