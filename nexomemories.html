@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Nexo's - CSE Hindi Memory Vault</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #0b0c10;
+            color: #ffffff;
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+
+        /* Top Navigation Header */
+        nav {
+            background: linear-gradient(135deg, #1f2833, #0b0c10);
+            border-bottom: 2px solid #66fcf1;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(102, 252, 241, 0.15);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            background: #66fcf1;
+            color: #0b0c10;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1.5rem;
+            box-shadow: 0 0 10px #66fcf1;
+        }
+
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: #66fcf1;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #c5c6c7;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: #66fcf1;
+        }
+
+        .btn-auth {
+            background: #45f3ff;
+            color: #0b0c10;
+            border: none;
+            padding: 8px 18px;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-auth:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(69, 243, 255, 0.4);
+        }
+
+        /* Container Sections */
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            border-left: 5px solid #66fcf1;
+            padding-left: 15px;
+            color: #66fcf1;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* About Us Profile Cards Matrix */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .profile-card {
+            background: #1f2833;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
+            padding-bottom: 20px;
+            transition: transform 0.3s;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            border-color: #66fcf1;
+        }
+
+        .avatar-box {
+            width: 100%;
+            height: 200px;
+            background: #2c3540;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: #66fcf1;
+            position: relative;
+        }
+
+        .profile-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            font-size: 1.3rem;
+            margin: 15px 0 5px;
+            color: #ffffff;
+        }
+
+        .profile-role {
+            font-size: 0.85rem;
+            color: #66fcf1;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .btn-download-avatar {
+            margin-top: 12px;
+            background: transparent;
+            border: 1px solid #66fcf1;
+            color: #66fcf1;
+            padding: 5px 12px;
+            font-size: 0.8rem;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-download-avatar:hover {
+            background: #66fcf1;
+            color: #0b0c10;
+        }
+
+        /* Protected Upload Module Box */
+        .upload-card {
+            background: #1f2833;
+            border: 2px dashed #66fcf1;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 5px;
+            display: none; /* Hidden unless logged in */
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #c5c6c7;
+        }
+
+        .form-control {
+            width: 100%;
+            background: #0b0c10;
+            border: 1px solid #45f3ff;
+            padding: 12px;
+            color: white;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        /* Gallery Feed grid columns layout */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .gallery-item {
+            background: #1f2833;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .media-container {
+            width: 100%;
+            height: 220px;
+            background: #000;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .media-container img, .media-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .item-details {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .item-timestamp {
+            font-size: 0.75rem;
+            color: #66fcf1;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .item-author {
+            font-size: 0.8rem;
+            background: rgba(102, 252, 241, 0.1);
+            color: #66fcf1;
+            padding: 2px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 10px;
+            align-self: flex-start;
+        }
+
+        .item-desc {
+            color: #c5c6c7;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .item-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 15px;
+        }
+
+        .btn-download {
+            color: #66fcf1;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-delete {
+            background: #e94560;
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            display: none; /* Hidden unless logged in */
+        }
+
+        /* Modal Authentication Overlay overlay views */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .modal.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: #1f2833;
+            border: 2px solid #66fcf1;
+            padding: 35px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #c5c6c7;
+        }
+
+        .close-modal:hover { color: white; }
+
+        .welcome-badge {
+            background: #1f2833;
+            border: 1px solid #66fcf1;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #66fcf1;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo-area">
+            <div class="logo-icon">N</div>
+            <div class="logo-text">THE NEXO'S</div>
+        </div>
+        <div class="nav-links">
+            <a onclick="scrollToSection('about')">Our Team</a>
+            <a onclick="scrollToSection('gallery')">Memory Stream</a>
+            <span class="welcome-badge" id="welcomeUser">Welcome!</span>
+            <button class="btn-auth" id="authBtn" onclick="toggleAuthModal()">Admin Login</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <div id="about">
+            <h2 class="section-title">The Four Roommates (CSE Hindi)</h2>
+            <div class="about-grid">
+                <div class="profile-card">
+                    <div class="avatar-box">
+                        <span id="avatar-preview-shivam">👦</span>
+                    </div>
+                    <h3 class="profile-name">Shivam</h3>
+                    <p class="profile-role">CSE (Hindi) Third Year</p>
+                    <button class="btn-download-avatar" onclick="downloadDummyAvatar('Shivam')">Download Card</button>
+                </div>
+                <div class="profile-card">
+                    <div class="avatar-box">
+                        <span id="avatar-preview-satyam">👦</span>
+                    </div>
+                    <h3 class="profile-name">Satyam</h3>
+                    <p class="profile-role">CSE (Hindi) Third Year</p>
+                    <button class="btn-download-avatar" onclick="downloadDummyAvatar('Satyam')">Download Card</button>
+                </div>
+                <div class="profile-card">
+                    <div class="avatar-box">
+                        <span id="avatar-preview-krish">👦</span>
+                    </div>
+                    <h3 class="profile-name">Krish</h3>
+                    <p class="profile-role">CSE (Hindi) Third Year</p>
+                    <button class="btn-download-avatar" onclick="downloadDummyAvatar('Krish')">Download Card</button>
+                </div>
+                <div class="profile-card">
+                    <div class="avatar-box">
+                        <span id="avatar-preview-aryan">👦</span>
+                    </div>
+                    <h3 class="profile-name">Aryan</h3>
+                    <p class="profile-role">CSE (Hindi) Third Year</p>
+                    <button class="btn-download-avatar" onclick="downloadDummyAvatar('Aryan')">Download Card</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="upload-card" id="uploadModule">
+            <h3 style="margin-bottom: 20px; color: #45f3ff;">✨ LOG NEW COLLEGE LIFE MEMORY</h3>
+            <div class="form-group">
+                <label>Select Memory Image or Video clip</label>
+                <input type="file" class="form-control" id="mediaFile" accept="image/*,video/*">
+            </div>
+            <div class="form-group">
+                <label>Memory Description (Where was this? What happened?)</label>
+                <textarea class="form-control" id="mediaDesc" rows="3" placeholder="Write down the back story..."></textarea>
+            </div>
+            <button class="btn-auth" style="width:100%; margin-top:10px;" onclick="saveNewMemory()">Post to Memory Vault</button>
+        </div>
+
+        <div id="gallery" style="margin-top: 40px;">
+            <h2 class="section-title">The Nexo Memory Stream</h2>
+            <div class="gallery-grid" id="galleryContainer">
+                </div>
+        </div>
+
+    </div>
+
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="toggleAuthModal()">&times;</span>
+            <h3 style="text-align:center; margin-bottom:25px; color:#66fcf1; letter-spacing:1px;">NEXO AUTHENTICATION</h3>
+            <div class="form-group">
+                <label>Username (Your Name)</label>
+                <input type="text" class="form-control" id="usernameInput" placeholder="e.g. shivam, satyam...">
+            </div>
+            <div class="form-group">
+                <label>Nexo Master Password</label>
+                <input type="password" class="form-control" id="passwordInput" placeholder="Enter security key">
+            </div>
+            <button class="btn-auth" style="width:100%; margin-top:15px; padding:12px;" onclick="attemptLogin()">Verify Identity</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+
+        // ==========================================
+        // 🔑 YOUR COPIED FIREBASE CONFIG (STARTS HERE)
+        // ==========================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyCWHeB2OF_Vp0tRrWs78L6sbJmv5l8ZG-E",
+            authDomain: "nexo-memory-vault.firebaseapp.com",
+            databaseURL: "https://nexo-memory-vault-default-rtdb.firebaseio.com",
+            projectId: "nexo-memory-vault",
+            storageBucket: "nexo-memory-vault.firebasestorage.app",
+            messagingSenderId: "1038475086395",
+            appId: "1:1038475086395:web:6464b3a23e3963f31baa1e"
+        };
+        // ==========================================
+        // 🔑 YOUR COPIED FIREBASE CONFIG (ENDS HERE)
+        // ==========================================
+
+        // Initialize Cloud Framework Frameworks
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const storage = getStorage(app);
+
+        // System Sign-In Trackers
+        const VAULT_KEY = "NexoHostel3rdYear";
+        const ALLOWED_USERS = ["shivam", "satyam", "krish", "aryan"];
+        let activeSessionUser = null;
+        let cachedMemoriesList = [];
+
+        // Global context visibility definitions
+        window.scrollToSection = function(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        };
+
+        window.toggleAuthModal = function() {
+            if(activeSessionUser) {
+                logOutSession();
+            } else {
+                document.getElementById('authModal').classList.toggle('active');
+            }
+        };
+
+        window.attemptLogin = function() {
+            const userIn = document.getElementById('usernameInput').value.trim().toLowerCase();
+            const passIn = document.getElementById('passwordInput').value.trim();
+
+            if (ALLOWED_USERS.includes(userIn) && passIn === VAULT_KEY) {
+                activeSessionUser = userIn;
+                document.getElementById('authModal').classList.remove('active');
+                
+                document.getElementById('uploadModule').style.display = 'block';
+                document.getElementById('welcomeUser').innerText = `Admin: ${userIn.toUpperCase()}`;
+                document.getElementById('welcomeUser').style.display = 'inline-block';
+                document.getElementById('authBtn').innerText = "Logout";
+                document.getElementById('authBtn').style.backgroundColor = "#e94560";
+                document.getElementById('authBtn').style.color = "white";
+
+                document.getElementById('usernameInput').value = "";
+                document.getElementById('passwordInput').value = "";
+
+                triggerLocalUIUpdate();
+                alert(`🔓 Access Granted! Welcome back ${userIn.toUpperCase()}.`);
+            } else {
+                alert("❌ Verification Failed!");
+            }
+        };
+
+        function logOutSession() {
+            activeSessionUser = null;
+            document.getElementById('uploadModule').style.display = 'none';
+            document.getElementById('welcomeUser').style.display = 'none';
+            document.getElementById('authBtn').innerText = "Admin Login";
+            document.getElementById('authBtn').style.backgroundColor = "#45f3ff";
+            document.getElementById('authBtn').style.color = "#0b0c10";
+            triggerLocalUIUpdate();
+            alert("🔒 Logged out successfully.");
+        }
+
+        // Processing Pipeline uploads directly into Storage bucket & text references into Realtime Node
+        window.saveNewMemory = async function() {
+            const fileInput = document.getElementById('mediaFile');
+            const descInput = document.getElementById('mediaDesc');
+
+            if (!fileInput.files || fileInput.files.length === 0) {
+                alert("Please attach a memory image or video clip first!");
+                return;
+            }
+
+            const activeFile = fileInput.files[0];
+            const uploadButton = document.querySelector("#uploadModule button");
+            
+            try {
+                uploadButton.innerText = "⚡ Uploading File to Firebase Storage...";
+                uploadButton.disabled = true;
+
+                // Upload structural object straight to Cloud Storage Buckets
+                const uniqueFileName = `${Date.now()}_${activeFile.name}`;
+                const storageRefInstance = sRef(storage, `memories/${uniqueFileName}`);
+                const uploadSnapshot = await uploadBytes(storageRefInstance, activeFile);
+                const cloudDownloadURL = await getDownloadURL(uploadSnapshot.ref);
+
+                // Date Time formatting
+                const rightNow = new Date();
+                const timeString = rightNow.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const dateString = rightNow.toLocaleDateString([], { day: '2-digit', month: 'short', year: 'numeric' });
+                const formattedTimestamp = `${dateString} @ ${timeString}`;
+
+                // Form structural database text row item references
+                const memoryPayload = {
+                    author: activeSessionUser.toUpperCase(),
+                    timestamp: formattedTimestamp,
+                    description: descInput.value.trim() || "No description provided.",
+                    mediaType: activeFile.type.startsWith('video') ? 'video' : 'image',
+                    mediaSrc: cloudDownloadURL
+                };
+
+                // Inject metadata reference securely into Database
+                await push(ref(database, 'vault_memories'), memoryPayload);
+
+                fileInput.value = "";
+                descInput.value = "";
+                alert("🎉 Memory locked into cloud database vault successfully!");
+
+            } catch (error) {
+                console.error(error);
+                alert("❌ Upload Interrupted: " + error.message);
+            } finally {
+                uploadButton.innerText = "Post to Memory Vault";
+                uploadButton.disabled = false;
+            }
+        };
+
+        // Realtime continuous structural array mapping sync listeners
+        onValue(ref(database, 'vault_memories'), (snapshot) => {
+            const dataMap = snapshot.val();
+            cachedMemoriesList = [];
+            
+            if (dataMap) {
+                Object.keys(dataMap).forEach(keyId => {
+                    cachedMemoriesList.push({
+                        id: keyId,
+                        ...dataMap[keyId]
+                    });
+                });
+                cachedMemoriesList.reverse();
+            }
+            triggerLocalUIUpdate();
+        });
+
+        function triggerLocalUIUpdate() {
+            const streamBox = document.getElementById('galleryContainer');
+            streamBox.innerHTML = '';
+
+            if(cachedMemoriesList.length === 0) {
+                streamBox.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:#c5c6c7;">The stream is empty. Log in to record your first memory!</div>`;
+                return;
+            }
+
+            cachedMemoriesList.forEach(item => {
+                let mediaElement = item.mediaType === 'video' 
+                    ? `<video src="${item.mediaSrc}" controls></video>`
+                    : `<img src="${item.mediaSrc}" alt="Memory image">`;
+
+                let deleteButtonVisibility = activeSessionUser ? 'block' : 'none';
+
+                let cardHtml = `
+                    <div class="gallery-item">
+                        <div class="media-container">
+                            ${mediaElement}
+                        </div>
+                        <div class="item-details">
+                            <span class="item-timestamp">📅 ${item.timestamp}</span>
+                            <span class="item-author">Logged by: ${item.author}</span>
+                            <p class="item-desc">${item.description}</p>
+                            <div class="item-actions">
+                                <a href="${item.mediaSrc}" target="_blank" class="btn-download">⬇️ View Asset File</a>
+                                <button class="btn-delete" style="display: ${deleteButtonVisibility}" onclick="deleteMemoryEntry('${item.id}')">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                streamBox.innerHTML += cardHtml;
+            });
+        }
+
+        window.deleteMemoryEntry = function(firebaseRecordId) {
+            if(!activeSessionUser) return;
+            if(confirm("Are you sure you want to permanently delete this memory?")) {
+                remove(ref(database, `vault_memories/${firebaseRecordId}`))
+                    .then(() => alert("Entry removed from cloud database."))
+                    .catch(err => alert("Error erasing data: " + err.message));
+            }
+        };
+
+        window.downloadDummyAvatar = function(name) {
+            const dataUrl = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 100 100"><rect width="100" height="100" fill="%231f2833"/><text x="50" y="55" font-size="12" fill="%2366fcf1" font-weight="bold" font-family="sans-serif" text-anchor="middle">' + name + ' (Nexo)</text></svg>';
+            const link = document.createElement('a');
+            link.href = dataUrl;
+            link.download = `${name}-NexoProfile.svg`;
+            link.click();
+        };
+    </script>
+</body>
+</html>
