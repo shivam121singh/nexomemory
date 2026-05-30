@@ -456,11 +456,8 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-        import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
-        // ==========================================
-        // 🔑 YOUR COPIED FIREBASE CONFIG (STARTS HERE)
-        // ==========================================
+        // Your specific project config credentials securely bound
         const firebaseConfig = {
             apiKey: "AIzaSyCWHeB2OF_Vp0tRrWs78L6sbJmv5l8ZG-E",
             authDomain: "nexo-memory-vault.firebaseapp.com",
@@ -470,22 +467,18 @@
             messagingSenderId: "1038475086395",
             appId: "1:1038475086395:web:6464b3a23e3963f31baa1e"
         };
-        // ==========================================
-        // 🔑 YOUR COPIED FIREBASE CONFIG (ENDS HERE)
-        // ==========================================
 
-        // Initialize Cloud Framework Frameworks
+        // Initialize App & Database reference hooks
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
-        const storage = getStorage(app);
 
-        // System Sign-In Trackers
+        // Security Configurations
         const VAULT_KEY = "NexoHostel3rdYear";
         const ALLOWED_USERS = ["shivam", "satyam", "krish", "aryan"];
         let activeSessionUser = null;
         let cachedMemoriesList = [];
 
-        // Global context visibility definitions
+        // Attach layout actions cleanly to global browser navigation properties
         window.scrollToSection = function(id) {
             document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
         };
@@ -534,10 +527,11 @@
             alert("🔒 Logged out successfully.");
         }
 
-        // Processing Pipeline uploads directly into Storage bucket & text references into Realtime Node
-        window.saveNewMemory = async function() {
+        // Conversional asset engine converting directly to Realtime Node blocks
+        window.saveNewMemory = function() {
             const fileInput = document.getElementById('mediaFile');
             const descInput = document.getElementById('mediaDesc');
+            const uploadButton = document.querySelector("#uploadModule button");
 
             if (!fileInput.files || fileInput.files.length === 0) {
                 alert("Please attach a memory image or video clip first!");
@@ -545,50 +539,59 @@
             }
 
             const activeFile = fileInput.files[0];
-            const uploadButton = document.querySelector("#uploadModule button");
             
-            try {
-                uploadButton.innerText = "⚡ Uploading File to Firebase Storage...";
-                uploadButton.disabled = true;
+            // Keeps your app lightning fast under free data quotas
+            if (activeFile.size > 14 * 1024 * 1024) { 
+                alert("Please select a file smaller than 14MB to ensure quick syncing!");
+                return;
+            }
 
-                // Upload structural object straight to Cloud Storage Buckets
-                const uniqueFileName = `${Date.now()}_${activeFile.name}`;
-                const storageRefInstance = sRef(storage, `memories/${uniqueFileName}`);
-                const uploadSnapshot = await uploadBytes(storageRefInstance, activeFile);
-                const cloudDownloadURL = await getDownloadURL(uploadSnapshot.ref);
+            uploadButton.innerText = "⚡ Uploading to Cloud Vault...";
+            uploadButton.disabled = true;
 
-                // Date Time formatting
-                const rightNow = new Date();
-                const timeString = rightNow.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                const dateString = rightNow.toLocaleDateString([], { day: '2-digit', month: 'short', year: 'numeric' });
-                const formattedTimestamp = `${dateString} @ ${timeString}`;
+            const reader = new FileReader();
+            reader.onload = async function(event) {
+                try {
+                    const base64Data = event.target.result;
+                    const rightNow = new Date();
+                    const timeString = rightNow.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    const dateString = rightNow.toLocaleDateString([], { day: '2-digit', month: 'short', year: 'numeric' });
+                    const formattedTimestamp = `${dateString} @ ${timeString}`;
 
-                // Form structural database text row item references
-                const memoryPayload = {
-                    author: activeSessionUser.toUpperCase(),
-                    timestamp: formattedTimestamp,
-                    description: descInput.value.trim() || "No description provided.",
-                    mediaType: activeFile.type.startsWith('video') ? 'video' : 'image',
-                    mediaSrc: cloudDownloadURL
-                };
+                    const memoryPayload = {
+                        author: activeSessionUser.toUpperCase(),
+                        timestamp: formattedTimestamp,
+                        description: descInput.value.trim() || "No description provided.",
+                        mediaType: activeFile.type.startsWith('video') ? 'video' : 'image',
+                        mediaSrc: base64Data
+                    };
 
-                // Inject metadata reference securely into Database
-                await push(ref(database, 'vault_memories'), memoryPayload);
+                    // Push directly into database path point node references
+                    await push(ref(database, 'vault_memories'), memoryPayload);
 
-                fileInput.value = "";
-                descInput.value = "";
-                alert("🎉 Memory locked into cloud database vault successfully!");
+                    fileInput.value = "";
+                    descInput.value = "";
+                    alert("🎉 Memory successfully locked into your cloud database vault!");
 
-            } catch (error) {
-                console.error(error);
-                alert("❌ Upload Interrupted: " + error.message);
-            } finally {
+                } catch (error) {
+                    console.error(error);
+                    alert("❌ Database Write Interrupted: " + error.message);
+                } finally {
+                    uploadButton.innerText = "Post to Memory Vault";
+                    uploadButton.disabled = false;
+                }
+            };
+
+            reader.onerror = function() {
+                alert("File conversion processing error!");
                 uploadButton.innerText = "Post to Memory Vault";
                 uploadButton.disabled = false;
-            }
+            };
+
+            reader.readAsDataURL(activeFile);
         };
 
-        // Realtime continuous structural array mapping sync listeners
+        // Persistent continuous active data streaming listeners
         onValue(ref(database, 'vault_memories'), (snapshot) => {
             const dataMap = snapshot.val();
             cachedMemoriesList = [];
@@ -600,7 +603,7 @@
                         ...dataMap[keyId]
                     });
                 });
-                cachedMemoriesList.reverse();
+                cachedMemoriesList.reverse(); // Ensures newest timelines render on top
             }
             triggerLocalUIUpdate();
         });
@@ -610,7 +613,7 @@
             streamBox.innerHTML = '';
 
             if(cachedMemoriesList.length === 0) {
-                streamBox.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:#c5c6c7;">The stream is empty. Log in to record your first memory!</div>`;
+                streamBox.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:#c5c6c7;">The cloud vault is empty. Log in above to record your very first memory!</div>`;
                 return;
             }
 
@@ -631,7 +634,7 @@
                             <span class="item-author">Logged by: ${item.author}</span>
                             <p class="item-desc">${item.description}</p>
                             <div class="item-actions">
-                                <a href="${item.mediaSrc}" target="_blank" class="btn-download">⬇️ View Asset File</a>
+                                <a href="${item.mediaSrc}" download="nexos-memory-${item.id}" class="btn-download">⬇️ Download File</a>
                                 <button class="btn-delete" style="display: ${deleteButtonVisibility}" onclick="deleteMemoryEntry('${item.id}')">Delete</button>
                             </div>
                         </div>
@@ -643,7 +646,7 @@
 
         window.deleteMemoryEntry = function(firebaseRecordId) {
             if(!activeSessionUser) return;
-            if(confirm("Are you sure you want to permanently delete this memory?")) {
+            if(confirm("Are you sure you want to permanently delete this memory from the cloud?")) {
                 remove(ref(database, `vault_memories/${firebaseRecordId}`))
                     .then(() => alert("Entry removed from cloud database."))
                     .catch(err => alert("Error erasing data: " + err.message));
